@@ -330,16 +330,56 @@
         }
 
         /* ===== DIARY ===== */
+        .diary-cycle-container {
+            margin-bottom: 28px;
+        }
+
+        .diary-cycle-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 26px 0 14px 0;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .diary-week-container {
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 18px;
+            border: 1px solid var(--border-color);
+        }
+
+        .diary-week-header {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-main);
+        }
+
         .diary-entry {
             background: var(--surface);
             border-radius: var(--radius-md);
             padding: 16px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+        }
+
+        .diary-entry:last-child {
+            margin-bottom: 0;
         }
 
         .diary-entry::before {
@@ -363,10 +403,17 @@
             margin-right: 8px;
         }
 
-        .diary-entry .program-name {
+        .diary-entry .day-name {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-main);
+        }
+
+        .diary-entry .program-subname {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 4px;
         }
 
         .diary-entry .exercises {
@@ -378,52 +425,65 @@
 
         .diary-entry .exercise-item {
             background: var(--bg-color);
-            padding: 10px 14px;
+            padding: 12px 14px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-color);
         }
 
-        .diary-entry .exercise-item strong {
+        .diary-entry .exercise-item strong.ex-title {
             display: block;
-            margin-bottom: 6px;
-            color: var(--primary);
+            margin-bottom: 8px;
+            color: var(--text-main);
             font-size: 0.95rem;
+            font-weight: 600;
         }
 
+        /* Обновленные стили для явного акцента на весах */
         .set-badge {
             background: var(--surface);
             color: var(--text-main);
-            padding: 2px 10px;
-            border-radius: 100px;
-            font-size: 0.78rem;
-            margin: 3px 4px 3px 0;
-            display: inline-block;
-            border: 1px solid #cbd5e1;
-            font-weight: 500;
-        }
-
-        .diary-group-header {
-            background: var(--bg-color);
-            padding: 12px 16px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            margin: 22px 0 12px;
-            display: flex;
-            justify-content: space-between;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin: 3px 6px 3px 0;
+            display: inline-flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
             border: 1px solid var(--border-color);
-            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
 
-        .diary-group-header .cycle-badge {
+        .set-badge .set-index {
+            background: var(--bg-color);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        .set-badge strong {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .set-badge .set-x {
+            color: var(--text-muted);
+            margin: 0 5px;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .cycle-badge {
             background: var(--primary);
             color: white;
             padding: 2px 10px;
             border-radius: 100px;
             font-size: 0.75rem;
             margin-left: 6px;
+            display: inline-block;
         }
 
         .config-info {
@@ -753,25 +813,6 @@
                 padding: 8px;
             }
 
-            .app {
-                max-width: 100%;
-            }
-
-            nav {
-                border-radius: 14px;
-                padding: 6px 8px;
-                gap: 4px;
-                top: 8px;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            nav button {
-                padding: 6px 12px;
-                font-size: 0.78rem;
-                flex: 0 0 auto;
-            }
-
             .page {
                 padding: 14px 12px;
                 border-radius: var(--radius-md);
@@ -829,18 +870,38 @@
                 font-size: 0.8rem;
             }
 
+            .diary-cycle-header {
+                font-size: 0.95rem;
+                padding: 10px 12px;
+                margin: 20px 0 10px 0;
+            }
+
+            .diary-week-container {
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+
+            .diary-week-header {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+
             .diary-entry {
                 padding: 12px;
             }
 
-            .diary-group-header {
-                font-size: 0.85rem;
-                padding: 10px 12px;
-            }
-
+            /* Адаптив подходов под мобильные */
             .set-badge {
-                font-size: 0.7rem;
-                padding: 2px 8px;
+                font-size: 0.78rem;
+                padding: 3px 8px;
+            }
+            .set-badge strong {
+                font-size: 0.88rem;
+            }
+            .set-badge .set-index {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+                margin-right: 6px;
             }
 
             .rm-result {
@@ -999,8 +1060,6 @@
                     </div>
                     <button class="btn btn-sm" id="updateMeasurementChartBtn">Обновить</button>
                 </div>
-
-                <!-- Карточки замеров удалены — вся история теперь в модалке -->
 
                 <div class="chart-container" style="margin-top:14px;">
                     <canvas id="weightChart" width="400" height="200"></canvas>
@@ -1371,62 +1430,92 @@
                 return;
             }
 
-            const groups = {};
+            const cycles = {};
             filtered.forEach(entry => {
                 const info = getCycleInfo(entry);
-                const key = `${info.cycle}-${info.weekNumber}`;
-                if (!groups[key]) {
-                    groups[key] = { cycle: info.cycle, weekNumber: info.weekNumber, weekType: info.weekType,
-                        entries: [] };
+                if (!cycles[info.cycle]) {
+                    cycles[info.cycle] = { cycle: info.cycle, weeks: {} };
                 }
-                groups[key].entries.push(entry);
+                if (!cycles[info.cycle].weeks[info.weekNumber]) {
+                    cycles[info.cycle].weeks[info.weekNumber] = {
+                        weekNumber: info.weekNumber,
+                        weekType: info.weekType,
+                        entries: []
+                    };
+                }
+                cycles[info.cycle].weeks[info.weekNumber].entries.push(entry);
             });
 
-            const sortedKeys = Object.keys(groups).sort((a, b) => {
-                const maxDateA = groups[a].entries.reduce((max, e) => e.date > max ? e.date : max, "");
-                const maxDateB = groups[b].entries.reduce((max, e) => e.date > max ? e.date : max, "");
-                return maxDateB.localeCompare(maxDateA);
-            });
+            const sortedCycleKeys = Object.keys(cycles).sort((a, b) => Number(b) - Number(a));
 
             let html = '';
-            sortedKeys.forEach(key => {
-                const group = groups[key];
-                const sortedEntries = [...group.entries].sort((a, b) => b.date.localeCompare(a.date));
-                html += `<div class="diary-group-header">
-                    <span style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-                        Цикл ${group.cycle}, Неделя ${group.weekNumber} <span class="cycle-badge">${group.weekType}</span>
-                    </span>
-                    <span style="color:var(--text-muted);font-size:0.8rem;font-weight:500;">${sortedEntries.length} записей</span>
-                </div>`;
-                sortedEntries.forEach(entry => {
-                    const program = data.programs.find(p => p.id === entry.programId);
-                    const programName = program ? program.name : 'Программа удалена';
-                    const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex]
-                        .dayName : 'День удалён';
-                    const exercisesHtml = entry.exercises.map(ex => {
-                        const setsHtml = ex.sets.map((s, i) =>
-                            `<span class="set-badge">${i+1} пдх: ${s.weight}кг × ${s.reps}</span>`
-                        ).join(' ');
-                        return `<div class="exercise-item"><strong>${ex.exerciseName}</strong> <div>${setsHtml}</div></div>`;
-                    }).join('');
-                    const dateObj = new Date(entry.date);
-                    const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit',
-                        year: 'numeric' });
-                    html += `
-                        <div class="diary-entry">
-                            <div style="margin-bottom:10px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-                                <span class="date">${formattedDate}</span> 
-                                <span class="program-name">${programName} <span style="color:var(--text-muted);font-weight:500;font-size:0.85rem;">(${dayName})</span></span>
+            sortedCycleKeys.forEach(cKey => {
+                const cycleGroup = cycles[cKey];
+                
+                html += `<div class="diary-cycle-container">
+                    <div class="diary-cycle-header">
+                        🔄 Цикл ${cycleGroup.cycle}
+                    </div>`;
+
+                const sortedWeekKeys = Object.keys(cycleGroup.weeks).sort((a, b) => Number(b) - Number(a));
+                
+                sortedWeekKeys.forEach(wKey => {
+                    const weekGroup = cycleGroup.weeks[wKey];
+                    const sortedEntries = [...weekGroup.entries].sort((a, b) => b.date.localeCompare(a.date));
+                    
+                    html += `<div class="diary-week-container">
+                        <div class="diary-week-header">
+                            <span>📅 Неделя ${weekGroup.weekNumber} <span class="cycle-badge">${weekGroup.weekType}</span></span>
+                            <span style="color:var(--text-muted);font-size:0.8rem;font-weight:500;">${sortedEntries.length} трен.</span>
+                        </div>`;
+
+                    sortedEntries.forEach(entry => {
+                        const program = data.programs.find(p => p.id === entry.programId);
+                        const programName = program ? program.name : 'Программа удалена';
+                        const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex].dayName : 'День удалён';
+                        
+                        // Изменен рендеринг подходов: яркий фокус на цифрах
+                        const exercisesHtml = entry.exercises.map(ex => {
+                            const setsHtml = ex.sets.map((s, i) =>
+                                `<span class="set-badge">
+                                    <span class="set-index">${i+1}</span>
+                                    <strong>${s.weight}</strong><span style="font-size:0.75rem;color:var(--text-muted);margin-left:2px;font-weight:normal;">кг</span>
+                                    <span class="set-x">×</span>
+                                    <strong>${s.reps}</strong>
+                                 </span>`
+                            ).join(' ');
+                            return `<div class="exercise-item">
+                                <strong class="ex-title">${ex.exerciseName}</strong> 
+                                <div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;">${setsHtml}</div>
+                            </div>`;
+                        }).join('');
+                        
+                        const dateObj = new Date(entry.date);
+                        const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        
+                        // Смещен акцент с названия программы на Название тренировочного дня
+                        html += `
+                            <div class="diary-entry">
+                                <div style="margin-bottom:12px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+                                    <span class="date">${formattedDate}</span> 
+                                    <span class="day-name">${dayName}</span>
+                                    <span class="program-subname">(${programName})</span>
+                                </div>
+                                <div class="exercises">${exercisesHtml}</div>
+                                <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border-color);padding-top:12px;flex-wrap:wrap;">
+                                    <button class="btn btn-sm btn-outline" onclick="editDiaryEntry(${entry.id})">✏️ Изменить</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteDiaryEntry(${entry.id})">🗑️ Удалить</button>
+                                </div>
                             </div>
-                            <div class="exercises">${exercisesHtml}</div>
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border-color);padding-top:12px;flex-wrap:wrap;">
-                                <button class="btn btn-sm btn-outline" onclick="editDiaryEntry(${entry.id})">✏️ Изменить</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteDiaryEntry(${entry.id})">🗑️ Удалить</button>
-                            </div>
-                        </div>
-                    `;
+                        `;
+                    });
+
+                    html += `</div>`;
                 });
+
+                html += `</div>`;
             });
+
             container.innerHTML = html;
             const methodText = data.config.method === 'count' ? 'по количеству тренировок' : 'по дате';
             document.getElementById('configInfo').innerHTML =
@@ -1448,7 +1537,6 @@
                 opt.textContent = m;
                 select.appendChild(opt);
             });
-            // сохраняем текущий фильтр, если он ещё существует
             if (currentVal && metrics.has(currentVal)) select.value = currentVal;
             else select.value = 'all';
             currentHistoryFilter = select.value;
@@ -1489,9 +1577,7 @@
                     if (realIdx !== -1 && confirm('Удалить этот замер?')) {
                         data.measurements.splice(realIdx, 1);
                         saveData();
-                        // обновить график
                         updateMeasurementChart();
-                        // обновить фильтр и таблицу
                         populateHistoryFilter();
                         renderHistoryTable(document.getElementById('historyFilterSelect').value);
                     }
@@ -1500,7 +1586,7 @@
         }
 
         // ============================================================
-        //  MODALS — NO BACKDROP CLOSE
+        //  MODALS
         // ============================================================
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('show');
@@ -1510,47 +1596,30 @@
             document.getElementById(modalId).classList.add('show');
         }
 
-        // ---- Program Modal ----
         document.getElementById('closeProgramModalBtn').addEventListener('click', () => closeModal('programModal'));
         document.getElementById('cancelProgramModal').addEventListener('click', () => closeModal('programModal'));
-
-        // ---- Diary Modal ----
         document.getElementById('closeDiaryModalBtn').addEventListener('click', () => closeModal('diaryModal'));
         document.getElementById('cancelDiaryModal').addEventListener('click', () => closeModal('diaryModal'));
-
-        // ---- Config Modal ----
         document.getElementById('closeConfigModalBtn').addEventListener('click', () => closeModal('configModal'));
         document.getElementById('cancelConfigModal').addEventListener('click', () => closeModal('configModal'));
-
-        // ---- Measurement Modal ----
         document.getElementById('closeMeasurementModalBtn').addEventListener('click', () => closeModal('measurementModal'));
         document.getElementById('cancelMeasurementModal').addEventListener('click', () => closeModal('measurementModal'));
-
-        // ---- Metrics Modal ----
         document.getElementById('closeMetricsModalBtn').addEventListener('click', () => closeModal('metricsModal'));
         document.getElementById('closeMetricsModal2').addEventListener('click', () => closeModal('metricsModal'));
+        document.getElementById('closeHistoryModalBtn').addEventListener('click', () => closeModal('measurementHistoryModal'));
+        document.getElementById('closeHistoryModalBtn2').addEventListener('click', () => closeModal('measurementHistoryModal'));
 
-        // ---- History Modal ----
-        document.getElementById('closeHistoryModalBtn').addEventListener('click', () => closeModal(
-        'measurementHistoryModal'));
-        document.getElementById('closeHistoryModalBtn2').addEventListener('click', () => closeModal(
-        'measurementHistoryModal'));
-
-        // ---- View All Measurements ----
         document.getElementById('viewAllMeasurementsBtn').addEventListener('click', function() {
             populateHistoryFilter();
             renderHistoryTable(document.getElementById('historyFilterSelect').value);
             openModal('measurementHistoryModal');
         });
 
-        // ---- Apply filter in history ----
         document.getElementById('applyHistoryFilterBtn').addEventListener('click', function() {
             const filter = document.getElementById('historyFilterSelect').value;
             currentHistoryFilter = filter;
             renderHistoryTable(filter);
         });
-
-        // ---- No backdrop close (no additional listeners) ----
 
         // ============================================================
         //  PROGRAM MODAL LOGIC
@@ -1817,7 +1886,7 @@
             });
         }
 
-        document.addEventListener('change', function(e) { if (e.target.id === 'diaryDaySelect') loadDiaryExercises(); });
+        document.getElementById('diaryDaySelect').addEventListener('change', loadDiaryExercises);
 
         document.getElementById('addEntryBtn').addEventListener('click', function() {
             if (data.programs.length === 0) { alert('Сначала создайте программу тренировок!'); return; }
@@ -1935,7 +2004,7 @@
         }
 
         // ============================================================
-        //  MEASUREMENTS — ADD
+        //  MEASUREMENTS
         // ============================================================
         function populateMetricsSelect() {
             const select = document.getElementById('measurementMetricSelect');
@@ -1961,7 +2030,6 @@
             data.measurements.push({ date, metric, value });
             saveData();
             updateMeasurementChart();
-            // если модалка истории открыта — обновляем её
             if (document.getElementById('measurementHistoryModal').classList.contains('show')) {
                 populateHistoryFilter();
                 renderHistoryTable(document.getElementById('historyFilterSelect').value);
