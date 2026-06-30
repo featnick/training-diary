@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <link rel="icon" href="./logo.png"/>
-
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#4f46e5">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="./logo.png">
-
+    <link rel="icon" href="./logo.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="./logo.png" />
     <title>Дневник тренировок</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
     <style>
@@ -27,6 +25,7 @@
             --primary: #4f46e5;
             --primary-hover: #4338ca;
             --primary-light: #e0e7ff;
+            --primary-dark: #3730a3;
             --danger: #ef4444;
             --danger-hover: #dc2626;
             --success: #10b981;
@@ -329,7 +328,7 @@
             border-top: 1px solid var(--border-color);
         }
 
-        /* ===== DIARY ===== */
+        /* ===== DIARY — НОВЫЙ ДИЗАЙН ИЗ index17 ===== */
         .diary-cycle-container {
             margin-bottom: 28px;
         }
@@ -438,7 +437,6 @@
             font-weight: 600;
         }
 
-        /* Обновленные стили для явного акцента на весах */
         .set-badge {
             background: var(--surface);
             color: var(--text-main);
@@ -890,7 +888,6 @@
                 padding: 12px;
             }
 
-            /* Адаптив подходов под мобильные */
             .set-badge {
                 font-size: 0.78rem;
                 padding: 3px 8px;
@@ -1230,7 +1227,7 @@
 
     <script>
         // ============================================================
-        //  DATA
+        //  DATA (рабочий функционал из index14)
         // ============================================================
         let data = {
             programs: [],
@@ -1430,6 +1427,7 @@
                 return;
             }
 
+            // Группировка по циклам и неделям
             const cycles = {};
             filtered.forEach(entry => {
                 const info = getCycleInfo(entry);
@@ -1451,18 +1449,18 @@
             let html = '';
             sortedCycleKeys.forEach(cKey => {
                 const cycleGroup = cycles[cKey];
-                
+
                 html += `<div class="diary-cycle-container">
                     <div class="diary-cycle-header">
                         🔄 Цикл ${cycleGroup.cycle}
                     </div>`;
 
                 const sortedWeekKeys = Object.keys(cycleGroup.weeks).sort((a, b) => Number(b) - Number(a));
-                
+
                 sortedWeekKeys.forEach(wKey => {
                     const weekGroup = cycleGroup.weeks[wKey];
                     const sortedEntries = [...weekGroup.entries].sort((a, b) => b.date.localeCompare(a.date));
-                    
+
                     html += `<div class="diary-week-container">
                         <div class="diary-week-header">
                             <span>📅 Неделя ${weekGroup.weekNumber} <span class="cycle-badge">${weekGroup.weekType}</span></span>
@@ -1472,9 +1470,9 @@
                     sortedEntries.forEach(entry => {
                         const program = data.programs.find(p => p.id === entry.programId);
                         const programName = program ? program.name : 'Программа удалена';
-                        const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex].dayName : 'День удалён';
-                        
-                        // Изменен рендеринг подходов: яркий фокус на цифрах
+                        const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex]
+                            .dayName : 'День удалён';
+
                         const exercisesHtml = entry.exercises.map(ex => {
                             const setsHtml = ex.sets.map((s, i) =>
                                 `<span class="set-badge">
@@ -1489,11 +1487,11 @@
                                 <div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;">${setsHtml}</div>
                             </div>`;
                         }).join('');
-                        
+
                         const dateObj = new Date(entry.date);
-                        const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                        
-                        // Смещен акцент с названия программы на Название тренировочного дня
+                        const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit',
+                            year: 'numeric' });
+
                         html += `
                             <div class="diary-entry">
                                 <div style="margin-bottom:12px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
@@ -1586,7 +1584,7 @@
         }
 
         // ============================================================
-        //  MODALS
+        //  MODALS — NO BACKDROP CLOSE
         // ============================================================
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('show');
@@ -1598,16 +1596,23 @@
 
         document.getElementById('closeProgramModalBtn').addEventListener('click', () => closeModal('programModal'));
         document.getElementById('cancelProgramModal').addEventListener('click', () => closeModal('programModal'));
+
         document.getElementById('closeDiaryModalBtn').addEventListener('click', () => closeModal('diaryModal'));
         document.getElementById('cancelDiaryModal').addEventListener('click', () => closeModal('diaryModal'));
+
         document.getElementById('closeConfigModalBtn').addEventListener('click', () => closeModal('configModal'));
         document.getElementById('cancelConfigModal').addEventListener('click', () => closeModal('configModal'));
+
         document.getElementById('closeMeasurementModalBtn').addEventListener('click', () => closeModal('measurementModal'));
         document.getElementById('cancelMeasurementModal').addEventListener('click', () => closeModal('measurementModal'));
+
         document.getElementById('closeMetricsModalBtn').addEventListener('click', () => closeModal('metricsModal'));
         document.getElementById('closeMetricsModal2').addEventListener('click', () => closeModal('metricsModal'));
-        document.getElementById('closeHistoryModalBtn').addEventListener('click', () => closeModal('measurementHistoryModal'));
-        document.getElementById('closeHistoryModalBtn2').addEventListener('click', () => closeModal('measurementHistoryModal'));
+
+        document.getElementById('closeHistoryModalBtn').addEventListener('click', () => closeModal(
+        'measurementHistoryModal'));
+        document.getElementById('closeHistoryModalBtn2').addEventListener('click', () => closeModal(
+        'measurementHistoryModal'));
 
         document.getElementById('viewAllMeasurementsBtn').addEventListener('click', function() {
             populateHistoryFilter();
@@ -1746,7 +1751,7 @@
         };
 
         // ============================================================
-        //  DIARY MODAL LOGIC
+        //  DIARY MODAL LOGIC — ИСПРАВЛЕНА СМЕНА ДНЯ
         // ============================================================
         function openDiaryModal(entryId = null) {
             const modal = document.getElementById('diaryModal');
@@ -1754,15 +1759,25 @@
             const dateInput = document.getElementById('diaryDateInput');
 
             populateDiaryProgramSelect();
-            document.getElementById('diaryProgramSelect').onchange = function() {
+
+            // Привязываем обработчик смены программы
+            const programSelect = document.getElementById('diaryProgramSelect');
+            programSelect.onchange = function() {
                 const programId = Number(this.value);
                 if (programId) {
                     loadDiaryDays(programId);
+                    // После загрузки дней принудительно загружаем упражнения для выбранного дня
                     loadDiaryExercises();
                 } else {
                     document.getElementById('diaryDaySelect').innerHTML = '<option value="">Выберите программу</option>';
                     document.getElementById('diaryExercisesContainer').innerHTML = '<p>Выберите программу</p>';
                 }
+            };
+
+            // Привязываем обработчик смены дня (напрямую через onchange)
+            const daySelect = document.getElementById('diaryDaySelect');
+            daySelect.onchange = function() {
+                loadDiaryExercises();
             };
 
             if (entryId) {
@@ -1773,6 +1788,7 @@
                 dateInput.value = entry.date;
                 document.getElementById('diaryProgramSelect').value = entry.programId;
                 loadDiaryDays(entry.programId, entry.dayIndex);
+                // Загружаем упражнения с существующими данными
                 loadDiaryExercises(entry.exercises);
                 const info = getCycleInfo(entry);
                 document.getElementById('diaryCycleDisplay').textContent =
@@ -1885,8 +1901,6 @@
                 btn.addEventListener('click', function() { this.closest('.set-row').remove(); });
             });
         }
-
-        document.getElementById('diaryDaySelect').addEventListener('change', loadDiaryExercises);
 
         document.getElementById('addEntryBtn').addEventListener('click', function() {
             if (data.programs.length === 0) { alert('Сначала создайте программу тренировок!'); return; }
