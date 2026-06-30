@@ -2,7 +2,6 @@
   "name": "Дневник тренировок",
   "short_name": "Тренировки",
   "description": "Планируйте и отслеживайте свои тренировки с удобным дневником",
-  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f1f5f9",
