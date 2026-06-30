@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <link rel="icon" href="/logo.png"/>
     <title>Дневник тренировок</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
     <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         :root {
-            /* Цветовая палитра */
             --primary: #4f46e5;
             --primary-hover: #4338ca;
             --primary-light: #e0e7ff;
@@ -18,37 +26,30 @@
             --success-hover: #059669;
             --warning: #f59e0b;
             --warning-hover: #d97706;
-            
+
             --bg-color: #f1f5f9;
             --surface: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            
-            /* Скругления и тени */
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
-            
-            /* Анимации */
-            --transition: all 0.25s ease;
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.12);
+
+            --transition: all 0.2s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-color);
             color: var(--text-main);
-            padding: 20px;
+            padding: 12px;
             line-height: 1.5;
+            min-height: 100vh;
         }
 
         .app {
@@ -57,33 +58,41 @@
             position: relative;
         }
 
-        /* Навигация */
+        /* ===== NAVIGATION ===== */
         nav {
             display: flex;
-            gap: 12px;
+            gap: 6px;
             background: var(--surface);
-            padding: 12px 20px;
+            padding: 8px 12px;
             border-radius: 100px;
             box-shadow: var(--shadow-sm);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             position: sticky;
-            top: 20px;
+            top: 12px;
             z-index: 50;
             border: 1px solid var(--border-color);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
         }
 
         nav button {
             background: transparent;
             border: none;
-            padding: 10px 24px;
-            font-size: 1.05rem;
+            padding: 8px 16px;
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--text-muted);
             border-radius: 100px;
             cursor: pointer;
             transition: var(--transition);
+            white-space: nowrap;
+            flex: 0 0 auto;
         }
 
         nav button.active {
@@ -97,13 +106,13 @@
             color: var(--text-main);
         }
 
-        /* Страницы */
+        /* ===== PAGES ===== */
         .page {
             display: none;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease;
             background: var(--surface);
             border-radius: var(--radius-lg);
-            padding: 30px;
+            padding: 20px 16px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
         }
@@ -113,66 +122,92 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2 {
-            font-size: 1.8rem;
-            margin-bottom: 24px;
+            font-size: 1.5rem;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
             font-weight: 700;
             color: var(--text-main);
         }
 
-        /* Кнопки */
+        /* ===== BUTTONS ===== */
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 100px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            white-space: nowrap;
         }
 
         .btn:hover {
             background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
-        
+
         .btn:active {
             transform: translateY(0);
         }
 
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover { background: var(--danger-hover); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25); }
-        
-        .btn-success { background: var(--success); }
-        .btn-success:hover { background: var(--success-hover); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
-        
-        .btn-warning { background: var(--warning); color: #fff; }
-        .btn-warning:hover { background: var(--warning-hover); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25); }
-        
-        .btn-sm { padding: 6px 16px; font-size: 0.85rem; }
-        
+        .btn-danger {
+            background: var(--danger);
+        }
+        .btn-danger:hover {
+            background: var(--danger-hover);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+        .btn-success:hover {
+            background: var(--success-hover);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #fff;
+        }
+        .btn-warning:hover {
+            background: var(--warning-hover);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-sm {
+            padding: 5px 14px;
+            font-size: 0.8rem;
+        }
+
         .btn-outline {
             background: transparent;
             border: 2px solid var(--border-color);
             color: var(--text-main);
             box-shadow: none;
         }
-        
+
         .btn-outline:hover {
             background: var(--bg-color);
             border-color: #cbd5e1;
@@ -180,20 +215,29 @@
             transform: translateY(-1px);
         }
 
-        /* Формы и Инпуты */
-        input, select {
+        .btn-block {
             width: 100%;
-            padding: 12px 16px;
+            justify-content: center;
+        }
+
+        /* ===== FORMS ===== */
+        input,
+        select {
+            width: 100%;
+            padding: 10px 14px;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-family: inherit;
             color: var(--text-main);
             background: var(--surface);
             transition: var(--transition);
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-light);
@@ -202,17 +246,17 @@
         label {
             display: block;
             font-weight: 600;
-            margin: 16px 0 8px;
-            font-size: 0.95rem;
+            margin: 14px 0 6px;
+            font-size: 0.9rem;
             color: var(--text-main);
         }
 
-        /* Карточки */
+        /* ===== CARDS ===== */
         .card {
             background: var(--surface);
             border-radius: var(--radius-md);
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 18px 16px;
+            margin-bottom: 18px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
         }
@@ -221,65 +265,69 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* Программы */
+        /* ===== PROGRAMS ===== */
         .program-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 20px;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         .program-item {
             background: var(--bg-color);
             border-radius: var(--radius-md);
-            padding: 24px;
+            padding: 18px 16px;
             border: 1px solid var(--border-color);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
-            height: 100%;
         }
 
         .program-item:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             background: var(--surface);
         }
 
         .program-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             color: var(--primary);
         }
 
         .program-item .days-list {
-            margin: 10px 0;
-            padding-left: 20px;
+            margin: 8px 0;
+            padding-left: 18px;
             color: var(--text-muted);
             flex-grow: 1;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .program-item .days-list li {
+            margin-bottom: 4px;
         }
 
         .program-item .actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 20px;
-            padding-top: 16px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid var(--border-color);
         }
 
-        /* Дневник */
+        /* ===== DIARY ===== */
         .diary-entry {
             background: var(--surface);
             border-radius: var(--radius-md);
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
@@ -293,58 +341,55 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 5px;
+            width: 4px;
             background: var(--primary);
-        }
-
-        .diary-entry:hover {
-            box-shadow: var(--shadow-md);
         }
 
         .diary-entry .date {
             display: inline-block;
             background: var(--primary-light);
             color: var(--primary-hover);
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 100px;
             font-weight: 600;
-            font-size: 0.9rem;
-            margin-right: 12px;
+            font-size: 0.8rem;
+            margin-right: 8px;
         }
 
         .diary-entry .program-name {
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-main);
         }
 
         .diary-entry .exercises {
-            margin-top: 16px;
+            margin-top: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .diary-entry .exercise-item {
             background: var(--bg-color);
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-color);
         }
-        
+
         .diary-entry .exercise-item strong {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--primary);
+            font-size: 0.95rem;
         }
 
         .set-badge {
             background: var(--surface);
             color: var(--text-main);
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 100px;
-            font-size: 0.85rem;
-            margin: 4px 6px 4px 0;
+            font-size: 0.78rem;
+            margin: 3px 4px 3px 0;
             display: inline-block;
             border: 1px solid #cbd5e1;
             font-weight: 500;
@@ -352,235 +397,254 @@
 
         .diary-group-header {
             background: var(--bg-color);
-            padding: 16px 20px;
+            padding: 12px 16px;
             border-radius: var(--radius-md);
             font-weight: 700;
-            margin: 30px 0 16px;
+            margin: 22px 0 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
             border: 1px solid var(--border-color);
+            font-size: 0.95rem;
         }
 
         .diary-group-header .cycle-badge {
             background: var(--primary);
             color: white;
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 100px;
-            font-size: 0.85rem;
-            margin-left: 8px;
+            font-size: 0.75rem;
+            margin-left: 6px;
         }
 
         .config-info {
             background: var(--primary-light);
             color: var(--primary-hover);
             border-radius: var(--radius-md);
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            font-size: 0.85rem;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .filter-bar {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             background: var(--bg-color);
-            padding: 16px;
+            padding: 12px 14px;
             border-radius: var(--radius-md);
         }
 
-        /* Статистика и замеры */
+        .filter-bar label {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .filter-bar select {
+            width: auto;
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* ===== STATS ===== */
         .stats-controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
             align-items: flex-end;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             background: var(--bg-color);
-            padding: 20px;
+            padding: 14px 16px;
             border-radius: var(--radius-md);
         }
-        
-        .stats-controls > div { flex: 1; min-width: 200px; }
-        .stats-controls label { margin-top: 0; }
+
+        .stats-controls>div {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .stats-controls label {
+            margin-top: 0;
+            font-size: 0.8rem;
+        }
+
+        .stats-controls input,
+        .stats-controls select {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
 
         .chart-container {
             background: var(--surface);
             border-radius: var(--radius-md);
-            padding: 20px;
-            margin: 20px 0;
+            padding: 14px;
+            margin: 14px 0;
             border: 1px solid var(--border-color);
             position: relative;
+            min-height: 200px;
         }
 
-        .measurements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px;
-            margin: 20px 0;
-        }
-
-        .measurement-card {
-            background: var(--bg-color);
-            padding: 20px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            position: relative;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-        }
-
-        .measurement-card:hover {
-            background: var(--surface);
-            box-shadow: var(--shadow-sm);
-            transform: translateY(-2px);
-        }
-
-        .measurement-card .value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-top: 8px;
-        }
-
-        .measurement-card .del-btn {
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .measurement-card .del-btn:hover { color: var(--danger); }
-
-        .measurement-card .metric-label {
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* Модальные окна */
+        /* ===== MODALS ===== */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(6px);
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 20px;
+            padding: 16px;
         }
 
-        .modal.show { display: flex; }
+        .modal.show {
+            display: flex;
+        }
 
         .modal-content {
             background: var(--surface);
             border-radius: var(--radius-lg);
-            padding: 32px;
-            max-width: 650px;
+            padding: 24px 20px;
+            max-width: 600px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 94vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.25s ease;
         }
 
         @keyframes slideUp {
-            from { transform: translateY(30px) scale(0.95); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+            from {
+                transform: translateY(24px) scale(0.96);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
         }
 
         .modal-content h3 {
-            margin-bottom: 24px;
-            font-size: 1.6rem;
+            margin-bottom: 18px;
+            font-size: 1.4rem;
             color: var(--primary);
             border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
+        }
+
+        .modal-content .modal-close-btn {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+            transition: var(--transition);
+        }
+
+        .modal-content .modal-close-btn:hover {
+            color: var(--text-main);
         }
 
         .day-block {
             background: var(--bg-color);
             border-radius: var(--radius-md);
-            padding: 20px;
-            margin: 16px 0;
+            padding: 16px;
+            margin: 12px 0;
             border: 1px solid var(--border-color);
         }
 
-        .exercise-row, .set-row {
+        .exercise-row,
+        .set-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
-            margin: 10px 0;
+            margin: 8px 0;
             flex-wrap: wrap;
         }
 
-        .exercise-row input, .set-row input { flex: 1; min-width: 120px; margin: 0; }
-        
+        .exercise-row input,
+        .set-row input {
+            flex: 1;
+            min-width: 100px;
+            margin: 0;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        .exercise-row .btn,
+        .set-row .btn {
+            flex-shrink: 0;
+        }
+
+        /* ===== RM TABLE ===== */
         .rm-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.95rem;
-            margin-top: 16px;
+            font-size: 0.85rem;
+            margin-top: 12px;
         }
-        
+
         .rm-table th {
             background: var(--bg-color);
-            padding: 12px 16px;
+            padding: 8px 12px;
             text-align: left;
             font-weight: 600;
-            border-radius: 8px 8px 0 0;
         }
-        
+
         .rm-table td {
-            padding: 12px 16px;
+            padding: 8px 12px;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .rm-result {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--success);
-            margin: 20px 0;
+            margin: 14px 0;
             text-align: center;
             background: var(--bg-color);
-            padding: 20px;
+            padding: 14px;
             border-radius: var(--radius-md);
         }
 
         .rm-tabs {
             display: flex;
-            gap: 12px;
-            margin: 20px 0 16px;
+            gap: 10px;
+            margin: 16px 0 12px;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
         }
-        
+
         .rm-tabs button {
             background: transparent;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 100px;
             cursor: pointer;
             font-weight: 600;
             color: var(--text-muted);
             transition: var(--transition);
+            font-size: 0.85rem;
         }
-        
+
         .rm-tabs button.active {
             background: var(--primary-light);
             color: var(--primary-hover);
@@ -591,10 +655,10 @@
             align-items: center;
             background: var(--surface);
             border: 1px solid var(--border-color);
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 100px;
-            margin: 6px;
-            font-size: 0.9rem;
+            margin: 4px;
+            font-size: 0.85rem;
             font-weight: 500;
             box-shadow: var(--shadow-sm);
         }
@@ -606,26 +670,259 @@
             font-weight: bold;
             transition: var(--transition);
         }
-        
-        .metric-tag .del-metric:hover { color: var(--danger); }
 
-        @media (max-width: 640px) {
-            nav { top: 10px; border-radius: var(--radius-md); padding: 8px; }
-            nav button { padding: 8px 16px; font-size: 0.9rem; flex: 1; text-align: center; }
-            .page { padding: 20px 16px; border-radius: var(--radius-md); }
-            .modal-content { padding: 24px 20px; }
-            .stats-controls > div { min-width: 100%; }
+        .metric-tag .del-metric:hover {
+            color: var(--danger);
+        }
+
+        /* ===== MEASUREMENT HISTORY TABLE ===== */
+        .measurement-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .measurement-history-table th {
+            background: var(--bg-color);
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .measurement-history-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .measurement-history-table .del-row-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            padding: 0 4px;
+        }
+
+        .measurement-history-table .del-row-btn:hover {
+            color: var(--danger);
+        }
+
+        .history-modal-content {
+            max-width: 700px;
+        }
+
+        .history-modal-content .table-wrap {
+            max-height: 50vh;
+            overflow-y: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 640px) {
+            body {
+                padding: 24px;
+            }
+
+            .page {
+                padding: 28px 30px;
+            }
+
+            .program-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .modal-content {
+                padding: 32px 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .app {
+                max-width: 100%;
+            }
+
+            nav {
+                border-radius: 14px;
+                padding: 6px 8px;
+                gap: 4px;
+                top: 8px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav button {
+                padding: 6px 12px;
+                font-size: 0.78rem;
+                flex: 0 0 auto;
+            }
+
+            .page {
+                padding: 14px 12px;
+                border-radius: var(--radius-md);
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+
+            .btn-sm {
+                padding: 4px 10px;
+                font-size: 0.72rem;
+            }
+
+            .modal {
+                padding: 8px;
+            }
+
+            .modal-content {
+                padding: 18px 14px;
+                border-radius: var(--radius-md);
+                max-height: 96vh;
+            }
+
+            .modal-content h3 {
+                font-size: 1.2rem;
+            }
+
+            .stats-controls {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .stats-controls>div {
+                min-width: 100%;
+            }
+
+            .stats-controls label {
+                font-size: 0.75rem;
+            }
+
+            .filter-bar {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .filter-bar select {
+                min-width: 80px;
+                font-size: 0.8rem;
+            }
+
+            .diary-entry {
+                padding: 12px;
+            }
+
+            .diary-group-header {
+                font-size: 0.85rem;
+                padding: 10px 12px;
+            }
+
+            .set-badge {
+                font-size: 0.7rem;
+                padding: 2px 8px;
+            }
+
+            .rm-result {
+                font-size: 1.2rem;
+                padding: 12px;
+            }
+
+            .chart-container {
+                padding: 10px;
+                min-height: 160px;
+            }
+
+            .program-item {
+                padding: 14px 12px;
+            }
+
+            .program-item h3 {
+                font-size: 1.05rem;
+            }
+
+            .day-block {
+                padding: 12px;
+            }
+
+            .exercise-row,
+            .set-row {
+                gap: 6px;
+            }
+
+            .exercise-row input,
+            .set-row input {
+                min-width: 60px;
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+
+            .card {
+                padding: 14px 12px;
+                margin-bottom: 14px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .card-header .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .rm-tabs button {
+                font-size: 0.78rem;
+                padding: 4px 10px;
+            }
+
+            .history-modal-content .table-wrap {
+                max-height: 40vh;
+            }
+
+            .measurement-history-table {
+                font-size: 0.75rem;
+            }
+
+            .measurement-history-table th,
+            .measurement-history-table td {
+                padding: 6px 8px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            nav button {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app">
+        <!-- NAV -->
         <nav>
             <button class="active" data-page="programs">📋 Программы</button>
             <button data-page="diary">📝 Дневник</button>
             <button data-page="stats">📊 Статистика</button>
         </nav>
 
+        <!-- PAGE: PROGRAMS -->
         <div id="page-programs" class="page active">
             <h2>Мои программы
                 <button class="btn" id="createProgramBtn">+ Создать</button>
@@ -633,6 +930,7 @@
             <div id="programsContainer" class="program-grid"></div>
         </div>
 
+        <!-- PAGE: DIARY -->
         <div id="page-diary" class="page">
             <h2>
                 Дневник тренировок
@@ -642,7 +940,7 @@
             <div id="configInfo" class="config-info"></div>
             <div class="filter-bar">
                 <label style="margin:0;">Фильтр по неделе:</label>
-                <select id="cycleFilter" style="width: auto; flex: 1; min-width: 150px;">
+                <select id="cycleFilter" style="width:auto;flex:1;min-width:120px;">
                     <option value="all">Все</option>
                 </select>
                 <button class="btn btn-sm" id="applyFilterBtn">Применить</button>
@@ -651,9 +949,10 @@
             <div id="diaryContainer"></div>
         </div>
 
+        <!-- PAGE: STATS -->
         <div id="page-stats" class="page">
             <h2>Инфографика</h2>
-            
+
             <div class="card">
                 <h3>Прогресс упражнения</h3>
                 <div class="stats-controls">
@@ -669,7 +968,7 @@
                             <option value="totalVolume">Общий объём</option>
                         </select>
                     </div>
-                    <button class="btn" id="updateChartBtn">Построить график</button>
+                    <button class="btn" id="updateChartBtn">Построить</button>
                 </div>
                 <div class="chart-container">
                     <canvas id="exerciseChart" width="400" height="200"></canvas>
@@ -679,20 +978,24 @@
             <div class="card">
                 <div class="card-header">
                     <h3 style="margin:0;">Замеры тела</h3>
-                    <div style="display:flex; gap:8px;">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
                         <button class="btn btn-sm" id="addMeasurementBtn">+ Добавить</button>
                         <button class="btn btn-sm btn-outline" id="manageMetricsBtn">📏 Показатели</button>
+                        <button class="btn btn-sm btn-outline" id="viewAllMeasurementsBtn">📋 Вся история</button>
                     </div>
                 </div>
-                <div class="stats-controls">
+
+                <div class="stats-controls" style="margin-bottom:12px;">
                     <div>
                         <label>Показатель для графика</label>
                         <select id="measurementChartMetric"></select>
                     </div>
                     <button class="btn btn-sm" id="updateMeasurementChartBtn">Обновить</button>
                 </div>
-                <div id="measurementsContainer" class="measurements-grid"></div>
-                <div class="chart-container">
+
+                <!-- Карточки замеров удалены — вся история теперь в модалке -->
+
+                <div class="chart-container" style="margin-top:14px;">
                     <canvas id="weightChart" width="400" height="200"></canvas>
                 </div>
             </div>
@@ -706,11 +1009,11 @@
                     </div>
                     <div>
                         <label>Вес (кг)</label>
-                        <input type="number" id="rmWeight" step="0.5" placeholder="0.0">
+                        <input type="number" id="rmWeight" step="0.5" placeholder="0.0" />
                     </div>
                     <div>
                         <label>Повторения</label>
-                        <input type="number" id="rmReps" step="1" placeholder="0">
+                        <input type="number" id="rmReps" step="1" placeholder="0" />
                     </div>
                     <button class="btn" id="calcRmBtn">Рассчитать</button>
                 </div>
@@ -724,42 +1027,50 @@
             </div>
         </div>
 
+        <!-- ===== MODALS ===== -->
+
+        <!-- Program Modal -->
         <div class="modal" id="programModal">
             <div class="modal-content">
+                <button class="modal-close-btn" id="closeProgramModalBtn">✕</button>
                 <h3 id="programModalTitle">Создать программу</h3>
                 <label>Название программы</label>
-                <input type="text" id="programNameInput" placeholder="Например: Силовая на массу">
+                <input type="text" id="programNameInput" placeholder="Например: Силовая на массу" />
                 <div id="programDaysContainer"></div>
-                <button class="btn btn-success btn-sm" id="addDayBtn" style="margin-top:16px;">+ Добавить день</button>
-                <div style="margin-top:30px; display:flex; gap:12px; justify-content:flex-end;">
+                <button class="btn btn-success btn-sm" id="addDayBtn" style="margin-top:14px;">+ Добавить день</button>
+                <div style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <button class="btn btn-outline" id="cancelProgramModal">Отмена</button>
                     <button class="btn" id="saveProgramBtn">Сохранить</button>
                 </div>
             </div>
         </div>
 
+        <!-- Diary Modal -->
         <div class="modal" id="diaryModal">
             <div class="modal-content">
+                <button class="modal-close-btn" id="closeDiaryModalBtn">✕</button>
                 <h3 id="diaryModalTitle">Новая запись</h3>
                 <label>Дата тренировки</label>
-                <input type="date" id="diaryDateInput">
-                <div id="diaryCycleInfo" style="background:var(--primary-light); color:var(--primary-hover); padding:12px 16px; border-radius:var(--radius-sm); margin:16px 0; font-size:0.95rem;">
+                <input type="date" id="diaryDateInput" />
+                <div id="diaryCycleInfo" style="background:var(--primary-light);color:var(--primary-hover);padding:10px 14px;border-radius:var(--radius-sm);margin:12px 0;font-size:0.85rem;">
                     <span id="diaryCycleDisplay">Цикл и неделя определяются автоматически</span>
                 </div>
                 <label>Программа</label>
                 <select id="diaryProgramSelect"></select>
                 <label>День</label>
                 <select id="diaryDaySelect"></select>
-                <div id="diaryExercisesContainer" style="margin-top: 20px;"></div>
-                <div style="margin-top:30px; display:flex; gap:12px; justify-content:flex-end;">
+                <div id="diaryExercisesContainer" style="margin-top:16px;"></div>
+                <div style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <button class="btn btn-outline" id="cancelDiaryModal">Отмена</button>
                     <button class="btn" id="saveDiaryBtn">Сохранить</button>
                 </div>
             </div>
         </div>
 
+        <!-- Config Modal -->
         <div class="modal" id="configModal">
             <div class="modal-content">
+                <button class="modal-close-btn" id="closeConfigModalBtn">✕</button>
                 <h3>Настройки периодизации</h3>
                 <label>Способ определения цикла и недели</label>
                 <select id="configMethod">
@@ -768,55 +1079,93 @@
                 </select>
                 <div id="configDateGroup">
                     <label>Дата начала первого цикла (для способа "По дате")</label>
-                    <input type="date" id="configStartDate">
+                    <input type="date" id="configStartDate" />
                 </div>
                 <div id="configCountGroup">
                     <label>Тренировок в неделе (для способа "По количеству")</label>
-                    <input type="number" id="configWorkoutsPerWeek" min="1" value="3">
+                    <input type="number" id="configWorkoutsPerWeek" min="1" value="3" />
                 </div>
                 <label>Типы недель (через запятую, в порядке следования в цикле)</label>
-                <input type="text" id="configWeekTypes" placeholder="объёмная, силовая, разгрузочная...">
-                <div style="margin-top:30px; display:flex; gap:12px; justify-content:flex-end;">
+                <input type="text" id="configWeekTypes" placeholder="объёмная, силовая, разгрузочная..." />
+                <div style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <button class="btn btn-outline" id="cancelConfigModal">Отмена</button>
                     <button class="btn" id="saveConfigBtn">Сохранить</button>
                 </div>
             </div>
         </div>
 
+        <!-- Measurement Add Modal -->
         <div class="modal" id="measurementModal">
             <div class="modal-content">
+                <button class="modal-close-btn" id="closeMeasurementModalBtn">✕</button>
                 <h3>Добавить замер</h3>
                 <label>Дата</label>
-                <input type="date" id="measurementDateInput">
+                <input type="date" id="measurementDateInput" />
                 <label>Показатель</label>
                 <select id="measurementMetricSelect"></select>
                 <label>Значение</label>
-                <input type="number" id="measurementValueInput" step="0.1" placeholder="Введите значение">
-                <div style="margin-top:30px; display:flex; gap:12px; justify-content:flex-end;">
+                <input type="number" id="measurementValueInput" step="0.1" placeholder="Введите значение" />
+                <div style="margin-top:24px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <button class="btn btn-outline" id="cancelMeasurementModal">Отмена</button>
                     <button class="btn" id="saveMeasurementBtn">Сохранить</button>
                 </div>
             </div>
         </div>
 
+        <!-- Metrics Manage Modal -->
         <div class="modal" id="metricsModal">
             <div class="modal-content">
+                <button class="modal-close-btn" id="closeMetricsModalBtn">✕</button>
                 <h3>Управление показателями замеров</h3>
-                <div id="metricsList" style="margin:20px 0; background:var(--bg-color); padding:16px; border-radius:var(--radius-md);"></div>
+                <div id="metricsList" style="margin:16px 0;background:var(--bg-color);padding:14px;border-radius:var(--radius-md);"></div>
                 <label>Добавить новый</label>
-                <div class="input-group" style="display:flex; gap:12px;">
-                    <input type="text" id="newMetricInput" placeholder="Название показателя" style="flex:1;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <input type="text" id="newMetricInput" placeholder="Название показателя" style="flex:1;min-width:140px;" />
                     <button class="btn btn-success" id="addMetricBtn">+ Добавить</button>
                 </div>
-                <div style="margin-top:30px; display:flex; justify-content:flex-end;">
-                    <button class="btn" id="closeMetricsModal">Закрыть</button>
+                <div style="margin-top:20px;display:flex;justify-content:flex-end;">
+                    <button class="btn" id="closeMetricsModal2">Закрыть</button>
                 </div>
             </div>
         </div>
+
+        <!-- Measurement History Modal (Full list with filter) -->
+        <div class="modal" id="measurementHistoryModal">
+            <div class="modal-content history-modal-content">
+                <button class="modal-close-btn" id="closeHistoryModalBtn">✕</button>
+                <h3>📋 Вся история замеров</h3>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; align-items:center;">
+                    <label style="margin:0; font-weight:600; font-size:0.9rem;">Фильтр по показателю:</label>
+                    <select id="historyFilterSelect" style="flex:1; min-width:140px;">
+                        <option value="all">Все</option>
+                    </select>
+                    <button class="btn btn-sm" id="applyHistoryFilterBtn">Применить</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="measurement-history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Показатель</th>
+                                <th>Значение</th>
+                                <th style="width:40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+                <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+                    <button class="btn" id="closeHistoryModalBtn2">Закрыть</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // ==================== ДАННЫЕ ====================
+        // ============================================================
+        //  DATA
+        // ============================================================
         let data = {
             programs: [],
             diary: [],
@@ -837,6 +1186,7 @@
             }
         };
         let editingDiaryId = null;
+        let currentHistoryFilter = 'all';
 
         function loadData() {
             const stored = localStorage.getItem('workoutData');
@@ -845,7 +1195,9 @@
                     const parsed = JSON.parse(stored);
                     data = parsed;
                     if (!data.config) {
-                        data.config = { method: 'count', startDate: '2026-01-01', weekTypes: ['объёмная', 'силовая', 'объёмная', 'силовая', 'разгрузочная'], workoutsPerWeek: 3, metrics: [] };
+                        data.config = { method: 'count', startDate: '2026-01-01', weekTypes: ['объёмная', 'силовая',
+                                'объёмная', 'силовая', 'разгрузочная'
+                            ], workoutsPerWeek: 3, metrics: [] };
                     }
                     if (!data.config.weekTypes || data.config.weekTypes.length === 0) {
                         data.config.weekTypes = ['объёмная', 'силовая', 'объёмная', 'силовая', 'разгрузочная'];
@@ -878,25 +1230,28 @@
             }
             if (!data.diary) data.diary = [];
             if (!data.measurements) data.measurements = [];
-            
-            // Демо данные, если пусто
+
             if (data.diary.length === 0) {
                 const now = new Date();
                 const today = now.toISOString().slice(0, 10);
-                
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 const tmrStr = tomorrow.toISOString().slice(0, 10);
-                
                 data.diary.push({
-                    id: 1, date: today, programId: 1, dayIndex: 0,
+                    id: 1,
+                    date: today,
+                    programId: 1,
+                    dayIndex: 0,
                     exercises: [
                         { exerciseName: 'Жим лёжа', sets: [{ weight: 80, reps: 8 }, { weight: 85, reps: 6 }] },
                         { exerciseName: 'Тяга штанги', sets: [{ weight: 70, reps: 10 }, { weight: 75, reps: 8 }] }
                     ]
                 });
                 data.diary.push({
-                    id: 2, date: tmrStr, programId: 1, dayIndex: 1,
+                    id: 2,
+                    date: tmrStr,
+                    programId: 1,
+                    dayIndex: 1,
                     exercises: [
                         { exerciseName: 'Приседания', sets: [{ weight: 100, reps: 5 }, { weight: 110, reps: 5 }] }
                     ]
@@ -919,7 +1274,9 @@
             return Math.floor(Date.now() + Math.random() * 1000);
         }
 
-        // ==================== ПЕРИОДИЗАЦИЯ ====================
+        // ============================================================
+        //  PERIODIZATION
+        // ============================================================
         function getCycleInfoByDate(dateStr) {
             const start = new Date(data.config.startDate);
             const d = new Date(dateStr);
@@ -962,15 +1319,20 @@
             }
         }
 
-        // ==================== РЕНДЕРИНГ ====================
+        // ============================================================
+        //  RENDER
+        // ============================================================
         function renderPrograms() {
             const container = document.getElementById('programsContainer');
             if (data.programs.length === 0) {
-                container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding: 40px; background:var(--surface); border-radius:var(--radius-md);">Нет программ. Создайте первую!</p>';
+                container.innerHTML =
+                    '<p style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:32px;background:var(--surface);border-radius:var(--radius-md);">Нет программ. Создайте первую!</p>';
                 return;
             }
             container.innerHTML = data.programs.map(p => {
-                const daysHtml = p.days.map(d => `<li style="margin-bottom:6px;"><strong>${d.dayName}</strong> <br><span style="font-size:0.9rem;">${d.exercises.join(', ')}</span></li>`).join('');
+                const daysHtml = p.days.map(d =>
+                    `<li style="margin-bottom:4px;"><strong>${d.dayName}</strong> <br><span style="font-size:0.85rem;">${d.exercises.join(', ')}</span></li>`
+                    ).join('');
                 return `
                     <div class="program-item">
                         <h3>${p.name}</h3>
@@ -997,22 +1359,22 @@
                 });
             }
             if (filtered.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:40px; background:var(--surface); border-radius:var(--radius-md);">Записей нет или нет совпадений по фильтру.</p>';
+                container.innerHTML =
+                    '<p style="color:var(--text-muted);text-align:center;padding:32px;background:var(--surface);border-radius:var(--radius-md);">Записей нет или нет совпадений по фильтру.</p>';
                 return;
             }
 
-            // Группировка
             const groups = {};
             filtered.forEach(entry => {
                 const info = getCycleInfo(entry);
                 const key = `${info.cycle}-${info.weekNumber}`;
                 if (!groups[key]) {
-                    groups[key] = { cycle: info.cycle, weekNumber: info.weekNumber, weekType: info.weekType, entries: [] };
+                    groups[key] = { cycle: info.cycle, weekNumber: info.weekNumber, weekType: info.weekType,
+                        entries: [] };
                 }
                 groups[key].entries.push(entry);
             });
 
-            // Исправленная сортировка: находим самую свежую дату в каждой группе и сортируем группы по убыванию даты
             const sortedKeys = Object.keys(groups).sort((a, b) => {
                 const maxDateA = groups[a].entries.reduce((max, e) => e.date > max ? e.date : max, "");
                 const maxDateB = groups[b].entries.reduce((max, e) => e.date > max ? e.date : max, "");
@@ -1022,40 +1384,35 @@
             let html = '';
             sortedKeys.forEach(key => {
                 const group = groups[key];
-                // Записи внутри группы также сортируем по убыванию даты (свежие сверху)
                 const sortedEntries = [...group.entries].sort((a, b) => b.date.localeCompare(a.date));
-                
                 html += `<div class="diary-group-header">
-                    <span style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
                         Цикл ${group.cycle}, Неделя ${group.weekNumber} <span class="cycle-badge">${group.weekType}</span>
                     </span>
-                    <span style="color:var(--text-muted); font-size:0.9rem; font-weight:500;">${sortedEntries.length} записей</span>
+                    <span style="color:var(--text-muted);font-size:0.8rem;font-weight:500;">${sortedEntries.length} записей</span>
                 </div>`;
-                
                 sortedEntries.forEach(entry => {
                     const program = data.programs.find(p => p.id === entry.programId);
                     const programName = program ? program.name : 'Программа удалена';
-                    const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex].dayName : 'День удалён';
-                    
+                    const dayName = program && program.days[entry.dayIndex] ? program.days[entry.dayIndex]
+                        .dayName : 'День удалён';
                     const exercisesHtml = entry.exercises.map(ex => {
                         const setsHtml = ex.sets.map((s, i) =>
                             `<span class="set-badge">${i+1} пдх: ${s.weight}кг × ${s.reps}</span>`
                         ).join(' ');
                         return `<div class="exercise-item"><strong>${ex.exerciseName}</strong> <div>${setsHtml}</div></div>`;
                     }).join('');
-                    
-                    // Форматируем дату для красивого отображения (ДД.ММ.ГГГГ)
                     const dateObj = new Date(entry.date);
-                    const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                    
+                    const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit',
+                        year: 'numeric' });
                     html += `
                         <div class="diary-entry">
-                            <div style="margin-bottom:12px; display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div style="margin-bottom:10px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
                                 <span class="date">${formattedDate}</span> 
-                                <span class="program-name">${programName} <span style="color:var(--text-muted); font-weight:500; font-size:0.95rem;">(${dayName})</span></span>
+                                <span class="program-name">${programName} <span style="color:var(--text-muted);font-weight:500;font-size:0.85rem;">(${dayName})</span></span>
                             </div>
                             <div class="exercises">${exercisesHtml}</div>
-                            <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid var(--border-color); padding-top:16px;">
+                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border-color);padding-top:12px;flex-wrap:wrap;">
                                 <button class="btn btn-sm btn-outline" onclick="editDiaryEntry(${entry.id})">✏️ Изменить</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteDiaryEntry(${entry.id})">🗑️ Удалить</button>
                             </div>
@@ -1069,38 +1426,128 @@
                 `🧾 <strong>Способ:</strong> ${methodText} &nbsp;|&nbsp; <strong>Тренировок/нед:</strong> ${data.config.workoutsPerWeek} &nbsp;|&nbsp; <strong>Типы:</strong> ${data.config.weekTypes.join(' → ')}`;
         }
 
-        function renderMeasurements() {
-            const container = document.getElementById('measurementsContainer');
-            if (data.measurements.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); grid-column:1/-1;">Нет замеров.</p>';
+        // ============================================================
+        //  MEASUREMENTS — HISTORY MODAL WITH FILTER
+        // ============================================================
+        function populateHistoryFilter() {
+            const select = document.getElementById('historyFilterSelect');
+            const metrics = new Set();
+            data.measurements.forEach(m => metrics.add(m.metric));
+            const currentVal = select.value;
+            select.innerHTML = '<option value="all">Все</option>';
+            metrics.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                select.appendChild(opt);
+            });
+            // сохраняем текущий фильтр, если он ещё существует
+            if (currentVal && metrics.has(currentVal)) select.value = currentVal;
+            else select.value = 'all';
+            currentHistoryFilter = select.value;
+        }
+
+        function renderHistoryTable(filterMetric) {
+            const tbody = document.getElementById('historyTableBody');
+            let filtered = data.measurements;
+            if (filterMetric && filterMetric !== 'all') {
+                filtered = filtered.filter(m => m.metric === filterMetric);
+            }
+            if (filtered.length === 0) {
+                tbody.innerHTML =
+                    '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px;">Нет замеров</td></tr>';
                 return;
             }
-            const sorted = [...data.measurements].sort((a, b) => b.date.localeCompare(a.date));
-            container.innerHTML = sorted.map((m, idx) => `
-                <div class="measurement-card">
-                    <button class="del-btn" data-idx="${idx}" title="Удалить замер">✕</button>
-                    <div class="metric-label">${m.metric}</div>
-                    <div style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">
-                        ${new Date(m.date).toLocaleDateString('ru-RU')}
-                    </div>
-                    <div class="value">${m.value}</div>
-                </div>
-            `).join('');
+            const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+            tbody.innerHTML = sorted.map((m, idx) => {
+                const dateObj = new Date(m.date);
+                const dateStr = dateObj.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit',
+                    year: 'numeric' });
+                return `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td><strong>${m.metric}</strong></td>
+                        <td>${m.value}</td>
+                        <td><button class="del-row-btn" data-idx="${idx}" title="Удалить">✕</button></td>
+                    </tr>
+                `;
+            }).join('');
 
-            container.querySelectorAll('.del-btn').forEach(btn => {
+            tbody.querySelectorAll('.del-row-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.idx);
-                    if (confirm('Удалить этот замер?')) {
-                        data.measurements.splice(idx, 1);
+                    const sortedAll = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+                    const realIdx = data.measurements.findIndex(m => m.date === sortedAll[idx].date && m
+                        .metric === sortedAll[idx].metric && m.value === sortedAll[idx].value);
+                    if (realIdx !== -1 && confirm('Удалить этот замер?')) {
+                        data.measurements.splice(realIdx, 1);
                         saveData();
-                        renderMeasurements();
+                        // обновить график
                         updateMeasurementChart();
+                        // обновить фильтр и таблицу
+                        populateHistoryFilter();
+                        renderHistoryTable(document.getElementById('historyFilterSelect').value);
                     }
                 });
             });
         }
 
-        // ==================== МОДАЛКИ (Программы) ====================
+        // ============================================================
+        //  MODALS — NO BACKDROP CLOSE
+        // ============================================================
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        // ---- Program Modal ----
+        document.getElementById('closeProgramModalBtn').addEventListener('click', () => closeModal('programModal'));
+        document.getElementById('cancelProgramModal').addEventListener('click', () => closeModal('programModal'));
+
+        // ---- Diary Modal ----
+        document.getElementById('closeDiaryModalBtn').addEventListener('click', () => closeModal('diaryModal'));
+        document.getElementById('cancelDiaryModal').addEventListener('click', () => closeModal('diaryModal'));
+
+        // ---- Config Modal ----
+        document.getElementById('closeConfigModalBtn').addEventListener('click', () => closeModal('configModal'));
+        document.getElementById('cancelConfigModal').addEventListener('click', () => closeModal('configModal'));
+
+        // ---- Measurement Modal ----
+        document.getElementById('closeMeasurementModalBtn').addEventListener('click', () => closeModal('measurementModal'));
+        document.getElementById('cancelMeasurementModal').addEventListener('click', () => closeModal('measurementModal'));
+
+        // ---- Metrics Modal ----
+        document.getElementById('closeMetricsModalBtn').addEventListener('click', () => closeModal('metricsModal'));
+        document.getElementById('closeMetricsModal2').addEventListener('click', () => closeModal('metricsModal'));
+
+        // ---- History Modal ----
+        document.getElementById('closeHistoryModalBtn').addEventListener('click', () => closeModal(
+        'measurementHistoryModal'));
+        document.getElementById('closeHistoryModalBtn2').addEventListener('click', () => closeModal(
+        'measurementHistoryModal'));
+
+        // ---- View All Measurements ----
+        document.getElementById('viewAllMeasurementsBtn').addEventListener('click', function() {
+            populateHistoryFilter();
+            renderHistoryTable(document.getElementById('historyFilterSelect').value);
+            openModal('measurementHistoryModal');
+        });
+
+        // ---- Apply filter in history ----
+        document.getElementById('applyHistoryFilterBtn').addEventListener('click', function() {
+            const filter = document.getElementById('historyFilterSelect').value;
+            currentHistoryFilter = filter;
+            renderHistoryTable(filter);
+        });
+
+        // ---- No backdrop close (no additional listeners) ----
+
+        // ============================================================
+        //  PROGRAM MODAL LOGIC
+        // ============================================================
         let editingProgramId = null;
 
         function openProgramModal(program = null) {
@@ -1124,7 +1571,7 @@
                 daysContainer.innerHTML = '';
                 addDayToModal('День 1', [], 0);
             }
-            modal.classList.add('show');
+            openModal('programModal');
         }
 
         function addDayToModal(dayName = '', exercises = [], index = null) {
@@ -1133,26 +1580,26 @@
             const div = document.createElement('div');
             div.className = 'day-block';
             div.dataset.index = idx;
-            
+
             const exercisesHtml = exercises.map(ex => `
                 <div class="exercise-row">
                     <input type="text" class="exercise-name-input" placeholder="Название упражнения" value="${ex}">
                     <button class="btn btn-sm btn-outline remove-exercise-btn">✕</button>
                 </div>
             `).join('');
-            
+
             div.innerHTML = `
-                <div class="day-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                    <input type="text" class="day-name-input" placeholder="Название тренировочного дня" value="${dayName}" style="flex:1; margin-right:12px; font-weight:600;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                    <input type="text" class="day-name-input" placeholder="Название тренировочного дня" value="${dayName}" style="flex:1;min-width:120px;font-weight:600;">
                     <button class="btn btn-sm btn-danger remove-day-btn">Удалить день</button>
                 </div>
                 <div class="day-exercises">
                     ${exercisesHtml}
                 </div>
-                <button class="btn btn-sm btn-outline add-exercise-btn" style="margin-top:12px; width:100%;">+ Добавить упражнение</button>
+                <button class="btn btn-sm btn-outline add-exercise-btn" style="margin-top:10px;width:100%;">+ Добавить упражнение</button>
             `;
             container.appendChild(div);
-            
+
             div.querySelector('.remove-day-btn').addEventListener('click', function() {
                 div.remove();
                 container.querySelectorAll('.day-block').forEach((b, i) => b.dataset.index = i);
@@ -1174,38 +1621,42 @@
         }
 
         document.getElementById('addDayBtn').addEventListener('click', () => addDayToModal('Новый день', []));
-        document.getElementById('cancelProgramModal').addEventListener('click', () => document.getElementById('programModal').classList.remove('show'));
 
         document.getElementById('saveProgramBtn').addEventListener('click', function() {
             const name = document.getElementById('programNameInput').value.trim();
             if (!name) { alert('Введите название программы'); return; }
-            
+
             const dayBlocks = document.querySelectorAll('#programDaysContainer .day-block');
             const days = [];
             let valid = true;
-            
+
             dayBlocks.forEach(block => {
                 const dayName = block.querySelector('.day-name-input').value.trim();
-                if (!dayName) { valid = false; alert('Название дня не может быть пустым'); return; }
+                if (!dayName) { valid = false;
+                    alert('Название дня не может быть пустым'); return; }
                 const exerciseInputs = block.querySelectorAll('.exercise-name-input');
                 const exercises = [];
                 exerciseInputs.forEach(inp => {
                     const val = inp.value.trim();
                     if (val) exercises.push(val);
                 });
-                if (exercises.length === 0) { valid = false; alert(`В дне "${dayName}" нет упражнений`); return; }
+                if (exercises.length === 0) { valid = false;
+                    alert(`В дне "${dayName}" нет упражнений`); return; }
                 days.push({ dayName, exercises });
             });
             if (!valid) return;
 
             if (editingProgramId !== null) {
                 const program = data.programs.find(p => p.id === editingProgramId);
-                if (program) { program.name = name; program.days = days; }
+                if (program) { program.name = name;
+                    program.days = days; }
             } else {
                 data.programs.push({ id: genId(), name: name, days: days });
             }
-            saveData(); renderPrograms(); populateAllSelects();
-            document.getElementById('programModal').classList.remove('show');
+            saveData();
+            renderPrograms();
+            populateAllSelects();
+            closeModal('programModal');
         });
 
         window.editProgram = (id) => { const p = data.programs.find(x => x.id === id); if (p) openProgramModal(p); };
@@ -1213,10 +1664,14 @@
             if (!confirm('Удалить программу?')) return;
             data.programs = data.programs.filter(p => p.id !== id);
             data.diary = data.diary.filter(d => d.programId !== id);
-            saveData(); renderPrograms(); populateAllSelects();
+            saveData();
+            renderPrograms();
+            populateAllSelects();
         };
 
-        // ==================== МОДАЛКИ (Дневник) ====================
+        // ============================================================
+        //  DIARY MODAL LOGIC
+        // ============================================================
         function openDiaryModal(entryId = null) {
             const modal = document.getElementById('diaryModal');
             const title = document.getElementById('diaryModalTitle');
@@ -1226,7 +1681,8 @@
             document.getElementById('diaryProgramSelect').onchange = function() {
                 const programId = Number(this.value);
                 if (programId) {
-                    loadDiaryDays(programId); loadDiaryExercises();
+                    loadDiaryDays(programId);
+                    loadDiaryExercises();
                 } else {
                     document.getElementById('diaryDaySelect').innerHTML = '<option value="">Выберите программу</option>';
                     document.getElementById('diaryExercisesContainer').innerHTML = '<p>Выберите программу</p>';
@@ -1243,7 +1699,8 @@
                 loadDiaryDays(entry.programId, entry.dayIndex);
                 loadDiaryExercises(entry.exercises);
                 const info = getCycleInfo(entry);
-                document.getElementById('diaryCycleDisplay').textContent = `Текущий цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
+                document.getElementById('diaryCycleDisplay').textContent =
+                    `Текущий цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
             } else {
                 editingDiaryId = null;
                 title.textContent = 'Новая запись';
@@ -1254,37 +1711,41 @@
                     loadDiaryDays(firstProgramId, 0);
                     loadDiaryExercises();
                 }
-                
                 if (data.config.method === 'count') {
-                    document.getElementById('diaryCycleDisplay').textContent = `Цикл/неделя будут рассчитаны после сохранения (по счету тренировок).`;
+                    document.getElementById('diaryCycleDisplay').textContent =
+                        `Цикл/неделя будут рассчитаны после сохранения (по счету тренировок).`;
                 } else {
                     const info = getCycleInfoByDate(dateInput.value);
-                    document.getElementById('diaryCycleDisplay').textContent = `Ожидается цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
+                    document.getElementById('diaryCycleDisplay').textContent =
+                        `Ожидается цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
                 }
             }
 
             dateInput.onchange = function() {
                 if (data.config.method === 'date') {
                     const info = getCycleInfoByDate(this.value);
-                    document.getElementById('diaryCycleDisplay').textContent = `Ожидается цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
+                    document.getElementById('diaryCycleDisplay').textContent =
+                        `Ожидается цикл: ${info.cycle} | Неделя: ${info.weekNumber} | Тип: ${info.weekType}`;
                 }
             };
-            modal.classList.add('show');
+            openModal('diaryModal');
         }
 
         function populateDiaryProgramSelect() {
             const select = document.getElementById('diaryProgramSelect');
             const currentVal = select.value;
             select.innerHTML = data.programs.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-            if (currentVal && data.programs.some(p => p.id == currentVal)) { select.value = currentVal; }
-            else if (data.programs.length > 0) { select.value = data.programs[0].id; }
+            if (currentVal && data.programs.some(p => p.id == currentVal)) { select.value = currentVal; } else if (data
+                .programs.length > 0) { select.value = data.programs[0].id; }
         }
 
         function loadDiaryDays(programId, selectedDayIndex = null) {
             const program = data.programs.find(p => p.id === programId);
             const daySelect = document.getElementById('diaryDaySelect');
             if (program && program.days && program.days.length > 0) {
-                daySelect.innerHTML = program.days.map((d, idx) => `<option value="${idx}" ${idx === selectedDayIndex ? 'selected' : ''}>${d.dayName}</option>`).join('');
+                daySelect.innerHTML = program.days.map((d, idx) =>
+                    `<option value="${idx}" ${idx === selectedDayIndex ? 'selected' : ''}>${d.dayName}</option>`).join(
+                    '');
                 if (selectedDayIndex === null) daySelect.selectedIndex = 0;
             } else {
                 daySelect.innerHTML = '<option value="">Нет доступных дней</option>';
@@ -1297,11 +1758,13 @@
             const dayIndex = parseInt(document.getElementById('diaryDaySelect').value);
             const program = data.programs.find(p => p.id === programId);
             if (!program || !program.days || !program.days[dayIndex]) {
-                container.innerHTML = '<p>Выберите программу и день</p>'; return;
+                container.innerHTML = '<p>Выберите программу и день</p>';
+                return;
             }
             const exerciseNames = program.days[dayIndex].exercises;
             if (!exerciseNames || exerciseNames.length === 0) {
-                container.innerHTML = '<p>В этом дне нет упражнений</p>'; return;
+                container.innerHTML = '<p>В этом дне нет упражнений</p>';
+                return;
             }
 
             let exercisesMap = {};
@@ -1318,9 +1781,9 @@
                 `).join('');
 
                 return `
-                    <div class="card" style="margin-top:16px; box-shadow:none; border-color:var(--border-color); padding: 16px;" data-exercise-index="${idx}">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--bg-color); padding-bottom:8px;">
-                            <strong style="color:var(--primary); font-size:1.1rem;">${exName}</strong>
+                    <div class="card" style="margin-top:12px;box-shadow:none;border-color:var(--border-color);padding:14px 12px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border-bottom:1px solid var(--bg-color);padding-bottom:6px;flex-wrap:wrap;gap:6px;">
+                            <strong style="color:var(--primary);font-size:1rem;">${exName}</strong>
                             <button class="btn btn-sm btn-outline add-set-btn">+ Подход</button>
                         </div>
                         <div class="sets-container">${setsHtml}</div>
@@ -1331,7 +1794,8 @@
             container.querySelectorAll('.add-set-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const setsContainer = this.closest('.card').querySelector('.sets-container');
-                    const row = document.createElement('div'); row.className = 'set-row';
+                    const row = document.createElement('div');
+                    row.className = 'set-row';
                     row.innerHTML = `
                         <input type="number" class="set-weight" placeholder="Вес (кг)" step="0.5">
                         <input type="number" class="set-reps" placeholder="Повторения" step="1">
@@ -1354,7 +1818,6 @@
         });
 
         window.editDiaryEntry = (id) => openDiaryModal(id);
-        document.getElementById('cancelDiaryModal').addEventListener('click', () => document.getElementById('diaryModal').classList.remove('show'));
 
         document.getElementById('saveDiaryBtn').addEventListener('click', function() {
             const date = document.getElementById('diaryDateInput').value;
@@ -1375,7 +1838,8 @@
                 setRows.forEach(row => {
                     const weight = parseFloat(row.querySelector('.set-weight').value);
                     const reps = parseInt(row.querySelector('.set-reps').value);
-                    if (!isNaN(weight) && !isNaN(reps) && weight >= 0 && reps > 0) sets.push({ weight, reps });
+                    if (!isNaN(weight) && !isNaN(reps) && weight >= 0 && reps > 0) sets.push({ weight,
+                        reps });
                 });
                 if (sets.length > 0) exercisesData.push({ exerciseName: exName, sets });
             });
@@ -1383,26 +1847,37 @@
 
             if (editingDiaryId !== null) {
                 const entry = data.diary.find(d => d.id === editingDiaryId);
-                if (entry) { entry.date = date; entry.programId = programId; entry.dayIndex = dayIndex; entry.exercises = exercisesData; }
+                if (entry) { entry.date = date;
+                    entry.programId = programId;
+                    entry.dayIndex = dayIndex;
+                    entry.exercises = exercisesData; }
             } else {
-                data.diary.push({ id: genId(), date: date, programId: programId, dayIndex: dayIndex, exercises: exercisesData });
+                data.diary.push({ id: genId(), date: date, programId: programId, dayIndex: dayIndex,
+                    exercises: exercisesData });
             }
-            saveData(); renderDiary(); populateAllSelects();
-            document.getElementById('diaryModal').classList.remove('show');
+            saveData();
+            renderDiary();
+            populateAllSelects();
+            closeModal('diaryModal');
         });
 
         window.deleteDiaryEntry = (id) => {
             if (!confirm('Удалить запись?')) return;
             data.diary = data.diary.filter(d => d.id !== id);
-            saveData(); renderDiary(); populateAllSelects();
+            saveData();
+            renderDiary();
+            populateAllSelects();
         };
 
         document.getElementById('applyFilterBtn').addEventListener('click', renderDiary);
         document.getElementById('clearFilterBtn').addEventListener('click', function() {
-            document.getElementById('cycleFilter').value = 'all'; renderDiary();
+            document.getElementById('cycleFilter').value = 'all';
+            renderDiary();
         });
 
-        // ==================== НАСТРОЙКИ ====================
+        // ============================================================
+        //  CONFIG
+        // ============================================================
         document.getElementById('configBtn').addEventListener('click', function() {
             const modal = document.getElementById('configModal');
             document.getElementById('configMethod').value = data.config.method;
@@ -1410,17 +1885,17 @@
             document.getElementById('configWeekTypes').value = data.config.weekTypes.join(', ');
             document.getElementById('configWorkoutsPerWeek').value = data.config.workoutsPerWeek;
             toggleConfigFields();
-            modal.classList.add('show');
+            openModal('configModal');
         });
 
         document.getElementById('configMethod').addEventListener('change', toggleConfigFields);
+
         function toggleConfigFields() {
             const method = document.getElementById('configMethod').value;
             document.getElementById('configDateGroup').style.display = method === 'date' ? 'block' : 'none';
             document.getElementById('configCountGroup').style.display = method === 'count' ? 'block' : 'none';
         }
 
-        document.getElementById('cancelConfigModal').addEventListener('click', () => document.getElementById('configModal').classList.remove('show'));
         document.getElementById('saveConfigBtn').addEventListener('click', function() {
             const method = document.getElementById('configMethod').value;
             const startDate = document.getElementById('configStartDate').value;
@@ -1431,12 +1906,17 @@
             const weekTypes = weekTypesStr.split(',').map(s => s.trim()).filter(s => s);
             if (weekTypes.length === 0) { alert('Введите хотя бы один тип недели'); return; }
             if (method === 'date' && !startDate) { alert('Укажите дату начала'); return; }
-            if (method === 'count' && (isNaN(workoutsPerWeek) || workoutsPerWeek < 1)) { alert('Укажите корректное кол-во (≥1)'); return; }
+            if (method === 'count' && (isNaN(workoutsPerWeek) || workoutsPerWeek < 1)) { alert(
+                    'Укажите корректное кол-во (≥1)'); return; }
 
-            data.config.method = method; data.config.startDate = startDate;
-            data.config.weekTypes = weekTypes; data.config.workoutsPerWeek = workoutsPerWeek;
-            saveData(); renderDiary(); populateFilterOptions();
-            document.getElementById('configModal').classList.remove('show');
+            data.config.method = method;
+            data.config.startDate = startDate;
+            data.config.weekTypes = weekTypes;
+            data.config.workoutsPerWeek = workoutsPerWeek;
+            saveData();
+            renderDiary();
+            populateFilterOptions();
+            closeModal('configModal');
         });
 
         function populateFilterOptions() {
@@ -1447,7 +1927,9 @@
             select.value = current;
         }
 
-        // ==================== ЗАМЕРЫ ====================
+        // ============================================================
+        //  MEASUREMENTS — ADD
+        // ============================================================
         function populateMetricsSelect() {
             const select = document.getElementById('measurementMetricSelect');
             const chartSelect = document.getElementById('measurementChartMetric');
@@ -1458,37 +1940,46 @@
         }
 
         document.getElementById('addMeasurementBtn').addEventListener('click', function() {
-            document.getElementById('measurementModal').classList.add('show');
             document.getElementById('measurementDateInput').value = new Date().toISOString().slice(0, 10);
             populateMetricsSelect();
             document.getElementById('measurementValueInput').value = '';
+            openModal('measurementModal');
         });
 
-        document.getElementById('cancelMeasurementModal').addEventListener('click', () => document.getElementById('measurementModal').classList.remove('show'));
-        
         document.getElementById('saveMeasurementBtn').addEventListener('click', function() {
             const date = document.getElementById('measurementDateInput').value;
             const metric = document.getElementById('measurementMetricSelect').value;
             const value = parseFloat(document.getElementById('measurementValueInput').value);
             if (!date || !metric || isNaN(value) || value <= 0) { alert('Проверьте введенные данные'); return; }
             data.measurements.push({ date, metric, value });
-            saveData(); renderMeasurements(); updateMeasurementChart();
-            document.getElementById('measurementModal').classList.remove('show');
+            saveData();
+            updateMeasurementChart();
+            // если модалка истории открыта — обновляем её
+            if (document.getElementById('measurementHistoryModal').classList.contains('show')) {
+                populateHistoryFilter();
+                renderHistoryTable(document.getElementById('historyFilterSelect').value);
+            }
+            closeModal('measurementModal');
         });
 
         document.getElementById('manageMetricsBtn').addEventListener('click', function() {
-            renderMetricsList(); document.getElementById('metricsModal').classList.add('show');
+            renderMetricsList();
+            openModal('metricsModal');
         });
 
         function renderMetricsList() {
             const container = document.getElementById('metricsList');
-            container.innerHTML = data.config.metrics.map((m, idx) => `<span class="metric-tag">${m} <span class="del-metric" data-idx="${idx}">✕</span></span>`).join(' ');
+            container.innerHTML = data.config.metrics.map((m, idx) =>
+                `<span class="metric-tag">${m} <span class="del-metric" data-idx="${idx}">✕</span></span>`
+            ).join(' ');
             container.querySelectorAll('.del-metric').forEach(el => {
                 el.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.idx);
                     if (confirm(`Удалить показатель "${data.config.metrics[idx]}"?`)) {
-                        data.config.metrics.splice(idx, 1); saveData();
-                        renderMetricsList(); populateMetricsSelect();
+                        data.config.metrics.splice(idx, 1);
+                        saveData();
+                        renderMetricsList();
+                        populateMetricsSelect();
                     }
                 });
             });
@@ -1499,19 +1990,25 @@
             const val = input.value.trim();
             if (!val || data.config.metrics.includes(val)) { alert('Некорректно или уже существует'); return; }
             data.config.metrics.push(val);
-            saveData(); renderMetricsList(); populateMetricsSelect(); input.value = '';
+            saveData();
+            renderMetricsList();
+            populateMetricsSelect();
+            input.value = '';
         });
-        document.getElementById('closeMetricsModal').addEventListener('click', () => document.getElementById('metricsModal').classList.remove('show'));
 
-        // ==================== СТАТИСТИКА И ГРАФИКИ ====================
+        // ============================================================
+        //  CHARTS
+        // ============================================================
         let measurementChartInstance = null;
+
         function updateMeasurementChart() {
             const metric = document.getElementById('measurementChartMetric').value;
             if (measurementChartInstance) measurementChartInstance.destroy();
             if (!metric) return;
-            const dataPoints = data.measurements.filter(m => m.metric === metric).sort((a, b) => a.date.localeCompare(b.date));
+            const dataPoints = data.measurements.filter(m => m.metric === metric).sort((a, b) => a.date.localeCompare(b
+            .date));
             if (dataPoints.length === 0) return;
-            
+
             const ctx = document.getElementById('weightChart').getContext('2d');
             measurementChartInstance = new Chart(ctx, {
                 type: 'line',
@@ -1521,8 +2018,10 @@
                         label: metric,
                         data: dataPoints.map(m => m.value),
                         borderColor: '#4f46e5',
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        fill: true, tension: 0.3, pointRadius: 5
+                        backgroundColor: 'rgba(79,70,229,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
@@ -1531,6 +2030,7 @@
         document.getElementById('updateMeasurementChartBtn').addEventListener('click', updateMeasurementChart);
 
         let exerciseChartInstance = null;
+
         function populateExerciseSelect() {
             const allExercises = new Set();
             data.diary.forEach(entry => entry.exercises.forEach(ex => allExercises.add(ex.exerciseName)));
@@ -1540,7 +2040,10 @@
         }
 
         function populateAllSelects() {
-            populateExerciseSelect(); populateDiaryProgramSelect(); populateFilterOptions(); populateMetricsSelect();
+            populateExerciseSelect();
+            populateDiaryProgramSelect();
+            populateFilterOptions();
+            populateMetricsSelect();
         }
 
         function updateExerciseChart() {
@@ -1550,7 +2053,7 @@
             if (!exName) return;
 
             const entries = data.diary.filter(entry => entry.exercises.some(ex => ex.exerciseName === exName))
-                                      .sort((a, b) => a.date.localeCompare(b.date));
+                .sort((a, b) => a.date.localeCompare(b.date));
             if (entries.length === 0) return;
 
             const values = entries.map(entry => {
@@ -1559,6 +2062,7 @@
                 if (metric === 'maxWeight') return Math.max(...ex.sets.map(s => s.weight));
                 if (metric === 'avgWeight') return ex.sets.reduce((sum, s) => sum + s.weight, 0) / ex.sets.length;
                 if (metric === 'totalVolume') return ex.sets.reduce((sum, s) => sum + s.weight * s.reps, 0);
+                return 0;
             });
 
             const ctx = document.getElementById('exerciseChart').getContext('2d');
@@ -1567,9 +2071,13 @@
                 data: {
                     labels: entries.map(e => new Date(e.date).toLocaleDateString('ru-RU')),
                     datasets: [{
-                        label: `${exName} (${metric})`, data: values,
-                        borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        fill: true, tension: 0.3, pointRadius: 5
+                        label: `${exName} (${metric})`,
+                        data: values,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
@@ -1577,14 +2085,18 @@
         }
         document.getElementById('updateChartBtn').addEventListener('click', updateExerciseChart);
 
-        // ==================== КАЛЬКУЛЯТОР ====================
+        // ============================================================
+        //  RM CALCULATOR
+        // ============================================================
         function getBestSet(exerciseName) {
-            let bestWeight = 0, bestReps = 0;
+            let bestWeight = 0,
+                bestReps = 0;
             data.diary.forEach(entry => {
                 entry.exercises.forEach(ex => {
                     if (ex.exerciseName === exerciseName) {
                         ex.sets.forEach(set => {
-                            if (set.weight > bestWeight) { bestWeight = set.weight; bestReps = set.reps; }
+                            if (set.weight > bestWeight) { bestWeight = set.weight;
+                                bestReps = set.reps; }
                         });
                     }
                 });
@@ -1600,7 +2112,8 @@
                 document.getElementById('calcRmBtn').click();
             } else {
                 ['rmWeight', 'rmReps', 'rmResult', 'rmPercentTable', 'rmRepsTable'].forEach(id => {
-                    document.getElementById(id).value = ''; document.getElementById(id).innerHTML = '';
+                    document.getElementById(id).value = '';
+                    document.getElementById(id).innerHTML = '';
                 });
             }
         });
@@ -1609,12 +2122,13 @@
             const weight = parseFloat(document.getElementById('rmWeight').value);
             const reps = parseInt(document.getElementById('rmReps').value);
             if (isNaN(weight) || weight <= 0 || isNaN(reps) || reps < 1) { alert('Введите корректные данные'); return; }
-            
+
             const rm = weight * (1 + 0.0333 * reps);
             document.getElementById('rmResult').textContent = `Ваш 1ПМ ≈ ${rm.toFixed(1)} кг`;
 
             const percentages = [100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50];
-            let htmlPercent = `<table class="rm-table"><thead><tr><th>% от 1ПМ</th><th>Вес (кг)</th><th>Повторений</th></tr></thead><tbody>`;
+            let htmlPercent =
+                `<table class="rm-table"><thead><tr><th>% от 1ПМ</th><th>Вес (кг)</th><th>Повторений</th></tr></thead><tbody>`;
             percentages.forEach(p => {
                 const lift = rm * (p / 100);
                 let aReps = Math.max(1, Math.round((rm / lift - 1) / 0.0333));
@@ -1623,10 +2137,12 @@
             document.getElementById('rmPercentTable').innerHTML = htmlPercent + '</tbody></table>';
 
             const repsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-            let htmlReps = `<table class="rm-table"><thead><tr><th>Повторения</th><th>Вес (кг)</th><th>% от 1ПМ</th></tr></thead><tbody>`;
+            let htmlReps =
+                `<table class="rm-table"><thead><tr><th>Повторения</th><th>Вес (кг)</th><th>% от 1ПМ</th></tr></thead><tbody>`;
             repsList.forEach(r => {
                 const lift = rm / (1 + 0.0333 * r);
-                htmlReps += `<tr><td>${r}</td><td><strong>${lift.toFixed(1)} кг</strong></td><td>${((lift/rm)*100).toFixed(0)}%</td></tr>`;
+                htmlReps +=
+                    `<tr><td>${r}</td><td><strong>${lift.toFixed(1)} кг</strong></td><td>${((lift/rm)*100).toFixed(0)}%</td></tr>`;
             });
             document.getElementById('rmRepsTable').innerHTML = htmlReps + '</tbody></table>';
             document.querySelector('.rm-tabs button[data-tab="percent"]').click();
@@ -1636,12 +2152,16 @@
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.rm-tabs button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                document.getElementById('rmPercentTable').style.display = this.dataset.tab === 'percent' ? 'block' : 'none';
-                document.getElementById('rmRepsTable').style.display = this.dataset.tab === 'reps' ? 'block' : 'none';
+                document.getElementById('rmPercentTable').style.display = this.dataset.tab === 'percent' ?
+                    'block' : 'none';
+                document.getElementById('rmRepsTable').style.display = this.dataset.tab === 'reps' ? 'block' :
+                    'none';
             });
         });
 
-        // ==================== НАВИГАЦИЯ ====================
+        // ============================================================
+        //  NAVIGATION
+        // ============================================================
         document.querySelectorAll('nav button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -1649,29 +2169,36 @@
                 const page = this.dataset.page;
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.getElementById(`page-${page}`).classList.add('active');
-                
+
                 if (page === 'stats') {
-                    populateExerciseSelect(); updateExerciseChart(); renderMeasurements(); updateMeasurementChart();
-                    if (document.getElementById('rmExerciseSelect').options.length > 0) document.getElementById('rmExerciseSelect').dispatchEvent(new Event('change'));
+                    populateExerciseSelect();
+                    updateExerciseChart();
+                    updateMeasurementChart();
+                    if (document.getElementById('rmExerciseSelect').options.length > 0) document.getElementById(
+                        'rmExerciseSelect').dispatchEvent(new Event('change'));
                 }
-                if (page === 'diary') { renderDiary(); populateFilterOptions(); }
+                if (page === 'diary') { renderDiary();
+                    populateFilterOptions(); }
                 if (page === 'programs') renderPrograms();
             });
         });
 
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        // ============================================================
+        //  INIT
+        // ============================================================
         document.getElementById('createProgramBtn').addEventListener('click', () => openProgramModal(null));
-        
-        loadData(); renderPrograms(); renderDiary(); renderMeasurements(); populateAllSelects();
+
+        loadData();
+        renderPrograms();
+        renderDiary();
+        populateAllSelects();
 
         setTimeout(() => {
-            updateExerciseChart(); updateMeasurementChart();
-            if (document.getElementById('rmExerciseSelect').options.length > 0) document.getElementById('rmExerciseSelect').dispatchEvent(new Event('change'));
-        }, 100);
-
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
-        });
+            updateExerciseChart();
+            updateMeasurementChart();
+            if (document.getElementById('rmExerciseSelect').options.length > 0) document.getElementById(
+                'rmExerciseSelect').dispatchEvent(new Event('change'));
+        }, 150);
     </script>
 </body>
 </html>
